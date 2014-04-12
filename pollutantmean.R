@@ -1,9 +1,8 @@
-
 ###################################################################################################
-##  Function 2
+##  Function 1
 ###################################################################################################
 
-complete <- function(directory, id = 1:332) {
+pollutantmean <- function(directory, pollutant, id = 1:332) {
   
   ## Get all file names in folder
   filenames <- list.files(path="./specdata/", pattern="*.csv" ,full.names = TRUE, ignore.case = TRUE)
@@ -34,15 +33,6 @@ complete <- function(directory, id = 1:332) {
   
   completeCases <- mydata[complete.cases(mydata)==TRUE,]
   
-  completeCases["count"] <- 1
-  
-  groupby <- tapply(completeCases$count,completeCases$ID,sum)
-  
-  output <- melt(groupby)
-  
-  names(output) <- c('id','nobs')
-  
-  return(output)  
+  return( mean(completeCases[pollutant][,], na.rm=TRUE) )
   
 }
-

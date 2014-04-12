@@ -55,23 +55,16 @@ complete <- function(directory, id = 1:332) {
   
   completeCases <- mydata[complete.cases(mydata)==TRUE,]
   
-  ##lapply(completeCases, table)
+  completeCases["count"] <- 1
+
+  groupby <- tapply(completeCases$count,completeCases$ID,sum)
   
-  select ID, count(*) from df 
-  group by ID
-  tapply(completeCases$count,completeCases$ID,sum)
+  output <- melt(groupby)
   
+  names(output) <- c('id','nobs')
   
-  ##completeCases['count'] = 1
-  ##aggregate(completeCases$count, by=list(completeCases$ID), FUN="count")
-  
-  ## Return a data frame of the form:
-  ## id nobs
-  ## 1  117
-  ## 2  1041
-  ## ...
-  ## where 'id' is the monitor ID number and 'nobs' is the
-  ## number of complete cases
+  return(output)  
+
 }
 
 

@@ -1,8 +1,9 @@
+
 ###################################################################################################
-##  Function 1
+##  Function 2
 ###################################################################################################
 
-pollutantmean <- function(directory, pollutant, id = 1:332) {
+complete <- function(directory, id = 1:332) {
   
   ## Get all file names in folder
   filenames <- list.files(path="./specdata/", pattern="*.csv" ,full.names = TRUE, ignore.case = TRUE)
@@ -25,7 +26,26 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
   for (i in 1:length(import.list)){
     tempData <- rbind(tempData, import.list[[i]])
   }
- 
-  return( mean(tempData[pollutant][,], na.rm=TRUE) )
+  
+  mydata <- list()
+  for(j in 1:length(id)){
+    mydata <- rbind( mydata, tempData[which(tempData$ID == id[j]),])
+  }
+  
+  completeCases <- mydata[complete.cases(mydata$sulfate, mydata$nitrate)==TRUE,]
+  
+  completeCases["count"] <- 1
+  
+  groupby <- tapply(completeCases$count,completeCases$ID,sum)
+  
+  output <- melt(groupby)
+  
+  names(output) <- c('id','nobs')
+  
+  if(id[1]>id[length(id)] ) {
+    return(output[order(id),])
+    
+  } else return(output)  
   
 }
+

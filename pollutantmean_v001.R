@@ -25,7 +25,14 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
   for (i in 1:length(import.list)){
     tempData <- rbind(tempData, import.list[[i]])
   }
- 
-  return( mean(tempData[pollutant][,], na.rm=TRUE) )
+  
+  mydata <- list()
+  for(j in 1:length(id)){
+    mydata <- rbind( mydata, tempData[which(tempData$ID == id[j]),])
+  }
+  
+  completeCases <- mydata[complete.cases(mydata)==TRUE,]
+  
+  return( mean(completeCases[pollutant][,], na.rm=TRUE) )
   
 }

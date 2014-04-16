@@ -33,6 +33,11 @@ json2
 ## Question 2
 
 library(sqldf)
+
+a <- data.frame(c(letters,1:26))
+
+sqldf('select letters from a where letters=\'b\';')
+
 library(data.table)
 acs <- fread("./getdata-data-ss06pid.csv")
 names(acs)

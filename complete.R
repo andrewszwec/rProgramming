@@ -4,9 +4,12 @@
 ###################################################################################################
 
 complete <- function(directory, id = 1:332) {
-  
+  library(reshape)
   ## Get all file names in folder
-  filenames <- list.files(path="./specdata/", pattern="*.csv" ,full.names = TRUE, ignore.case = TRUE)
+  filenames <- list.files(path=paste( "./", directory,"/", sep=""), pattern="*.csv" ,full.names = TRUE, ignore.case = TRUE)
+  
+  ##  Working Copy
+  ##   filenames <- list.files(path="./specdata/", pattern="*.csv" ,full.names = TRUE, ignore.case = TRUE)
   
   ## Go and get data from specified files (select filesnames where filename contains id[] )
   padded <- formatC(id, width=3, format='d', flag="0")
@@ -42,7 +45,8 @@ complete <- function(directory, id = 1:332) {
   
   names(output) <- c('id','nobs')
   
-  return(output)  
+  
+  return(output[with(output, order(-id)), ])  
   
 }
 
